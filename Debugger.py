@@ -3,7 +3,6 @@ class Debugger:
         self.verbose = verbose
 
     def rise_Error(self, msg):
-        if self.verbose:
             print("[ERROR] ", msg)
 
     def debug(self,msg):

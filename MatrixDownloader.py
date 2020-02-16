@@ -4,8 +4,9 @@ from scipy.sparse import *
 from Debugger import *
 import urllib.request
 
+
 class MatrixDownloader:
-    def __init__(self,verbose):
+    def __init__(self, verbose):
         self.debugger = Debugger(verbose)
         try:
             urllib.request.urlopen('http://google.com')
