@@ -10,7 +10,6 @@ class MatrixDownloader:
         self.debugger = Debugger(verbose)
         try:
             urllib.request.urlopen('http://google.com')
-            pass
         except:
             self.debugger.rise_Error("Internet Connection Cannot Be Established")
             exit(1)

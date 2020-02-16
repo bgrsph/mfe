@@ -1,17 +1,19 @@
 from Debugger import *
 import numpy as np
 
+
 class MatrixAnalyzer:
     def __init__(self, verbose):
         self.debugger = Debugger(verbose)
 
     def getLevels(self, csr_matrix):
-        self.debugger.debug("Calculating Matrix Levels")
+        self.debugger.debug("Calculating Matrix Levels...")
         level_sets = {}
         num_rows = csr_matrix.get_shape()[0]
         num_columns = csr_matrix.get_shape()[1]
         for i in range(0, num_rows):
             level_sets[i] = 0
+
         # level_sets[i] = the level of i'th unknown
         for i in range(0, num_rows):
             local_max = float('-inf')
@@ -24,15 +26,50 @@ class MatrixAnalyzer:
             # It means matrix either cannot be read or it's empty somehow
             if local_max == float('-inf'):
                 self.debugger.rise_Error("Rows or Columns cannot be read during Level Calculation")
+                exit(1)
+        self.debugger.debug("Matrix Levels Calculated")
         return level_sets
 
-    '''
-        -raw: returns the dictionary that has the format: {row_index, number of non-zero elements}
-        -avg: returns average number of non-zeros per row
-        -max: returns maximum number of non-zeros per row
-        -std: returns standard deviation of non-zeros per row
-    '''
+    def get_rowID_per_level(self, csr_matrix):
+        self.debugger.debug("Calculating Row IDs per Level")
+        level_sets = {}
+        row_ID_per_level = {}
+        num_rows = csr_matrix.get_shape()[0]
+        num_columns = csr_matrix.get_shape()[1]
+        for i in range(0, num_rows):
+            level_sets[i] = 0
+            row_ID_per_level[i] = []
+
+        # level_sets[i] = the level of i'th unknown
+        for i in range(0, num_rows):
+            local_max = float('-inf')
+            for j in range(0, num_columns):
+                if csr_matrix[i, j] != 0:
+                    if level_sets[j] > local_max:
+                        local_max = level_sets[j]
+            level_sets[i] = 1 + local_max
+            row_ID_per_level[str(1 + local_max)].append(i)
+
+            # It means matrix either cannot be read or it's empty somehow
+            if local_max == float('-inf'):
+                self.debugger.rise_Error("Rows or Columns cannot be read during RowID/Level Calculation")
+                exit(1)
+        self.debugger.debug("RowID/Level Calculated")
+        return row_ID_per_level
+
     def get_nnz_per_row(self, csr_matrix, action="raw"):
+        """
+        Parameters:
+            csr_matrix (scipy.csr): the sparse matrix in CSR format
+            action=avg (String): average number of non-zeros per row
+            action=max (String): maximum number of non-zeros per row
+            action=std (String): standard deviation of non-zeros per row
+            action=raw (String): the dictionary that has the format: {row_index, number of non-zero elements}
+
+        Returns:
+            dictionary or float: statistics about number of non zeros elements in the columns of the matrix
+
+        """
         nnz_per_row = {}
         num_rows = csr_matrix.get_shape()[0]
         for row_id in range(0, num_rows):
@@ -49,13 +86,19 @@ class MatrixAnalyzer:
             self.debugger.rise_Error("Unknown action for get_nnz_per_row: " + str(action))
             exit(1)
 
-    '''
-        -raw: returns the dictionary that has the format: {column_index, number of non-zero elements}
-        -avg: returns average number of non-zeros per column
-        -max: returns maximum number of non-zeros per column
-        -std: returns standard deviation of non-zeros per column
-    '''
-    def get_nnz_per_column(self, csr_matrix,action="raw"):
+    def get_nnz_per_column(self, csr_matrix, action="raw"):
+        """
+         Parameters:
+            csr_matrix (scipy.csr): the sparse matrix in CSR format
+            action=avg (String): average number of non-zeros per column
+            action=max (String): maximum number of non-zeros per column
+            action=std (String): standard deviation of non-zeros per column
+            action=raw (String): the dictionary that has the format: {column_index, number of non-zero elements}
+
+         Returns:
+            dictionary or float: statistics about number of non zeros elements in the columns of the matrix
+
+         """
         nnz_per_column = {}
         num_columns = csr_matrix.get_shape()[1]
         for column_id in range(0, num_columns):
