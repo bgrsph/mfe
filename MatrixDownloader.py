@@ -4,7 +4,6 @@ from scipy.sparse import *
 from Debugger import *
 import urllib.request
 
-
 class MatrixDownloader:
     def __init__(self, verbose):
         self.debugger = Debugger(verbose)
