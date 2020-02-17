@@ -30,33 +30,6 @@ class MatrixAnalyzer:
         self.debugger.debug("Matrix Levels Calculated")
         return level_sets
 
-    def get_rowID_per_level(self, csr_matrix):
-        self.debugger.debug("Calculating Row IDs per Level")
-        level_sets = {}
-        row_ID_per_level = {}
-        num_rows = csr_matrix.get_shape()[0]
-        num_columns = csr_matrix.get_shape()[1]
-        for i in range(0, num_rows):
-            level_sets[i] = 0
-            row_ID_per_level[i] = []
-
-        # level_sets[i] = the level of i'th unknown
-        for i in range(0, num_rows):
-            local_max = float('-inf')
-            for j in range(0, num_columns):
-                if csr_matrix[i, j] != 0:
-                    if level_sets[j] > local_max:
-                        local_max = level_sets[j]
-            level_sets[i] = 1 + local_max
-            row_ID_per_level[str(1 + local_max)].append(i)
-
-            # It means matrix either cannot be read or it's empty somehow
-            if local_max == float('-inf'):
-                self.debugger.rise_Error("Rows or Columns cannot be read during RowID/Level Calculation")
-                exit(1)
-        self.debugger.debug("RowID/Level Calculated")
-        return row_ID_per_level
-
     def get_nnz_per_row(self, csr_matrix, action="raw"):
         """
         Parameters:
@@ -114,3 +87,10 @@ class MatrixAnalyzer:
         else:
             self.debugger.rise_Error("Unknown action for get_nnz_per_column: " + str(action))
             exit(1)
+
+    def get_num_of_rows_per_level(self, level_set):
+        rows_per_level = {n: [k for k in level_set.keys() if level_set[k] == n] for n in set(level_set.values())}
+        num_rows_per_level = {}
+        for level,rows in rows_per_level.items():
+            num_rows_per_level[level] = len(rows)
+        return num_rows_per_level

@@ -18,6 +18,7 @@ class MatrixDownloader:
         self.debugger.debug("Downloading Matrix: " + str(matrix_id))
         MM_path = str(subprocess.run(['ssget', '-e', '-i', str(matrix_id)], stdout=subprocess.PIPE,
                                      stderr=subprocess.STDOUT)).split("'")[-2][:-2]
+        self.debugger.debug("Matrix Path is " + str(MM_path))
         self.debugger.debug("Matrix Downloaded")
         Matrix_CSR = scipy.io.mmread(MM_path).tocsr()
         if diagonal == "lower":
