@@ -52,6 +52,28 @@ class MatrixAnalyzer:
         self.debugger.debug("Matrix Levels Calculated")
         return level_sets
 
+    def getLevels_colwise(self, csr_matrix):
+        self.debugger.debug("Calculating Matrix Levels...")
+        level_sets = {}
+        num_rows = csr_matrix.get_shape()[0]
+        num_columns = csr_matrix.get_shape()[1]
+        for i in range(0, num_rows):
+            level_sets[i] = 0
+
+        # level_sets[i] = the level of i'th unknown
+        for j in range(0, num_columns):
+            local_max = level_sets[j] + 1
+            for i in range(0, num_rows):
+                if csr_matrix[i, j] != 0:
+                    level_sets[i] = max(local_max, level_sets[i])
+
+            # It means matrix either cannot be read or it's empty somehow
+            if local_max == float('-inf'):
+                self.debugger.rise_Error("Rows or Columns cannot be read during Level Calculation")
+                exit(1)
+        self.debugger.debug("Matrix Levels Calculated")
+        return level_sets
+
     def get_nnz_per_row(self, csr_matrix, action="raw"):
         """
         Parameters:
