@@ -6,13 +6,14 @@ import argparse
 
 
 # Parse the command line arguments
-parser = argparse.ArgumentParser(description='Analyzes a matrix with given ID and produces histograms')
-parser.add_argument('matrix_ID', type=int,
-                    help='ID of the matrix file')
-args = parser.parse_args()
+#parser = argparse.ArgumentParser(description='Analyzes a matrix with given ID and produces histograms')
+#parser.add_argument('matrix_ID', type=int,
+                #    help='ID of the matrix file')
+#args = parser.parse_args()
 
 # Assign the argument to a global variable
-MATRIX_ID = args.matrix_ID
+#MATRIX_ID = args.matrix_ID
+MATRIX_ID = 1417
 
 # Make it True to see the progress
 verbose = True
@@ -36,7 +37,8 @@ fileManager.createDirForMatrix(matrixID=MATRIX_ID)
 level_sets = matrix_analyzer.getLevels(csr_matrix=CSR_Matrix_Lower_Triangular)
 nnz_per_row = matrix_analyzer.get_nnz_per_row(csr_matrix=CSR_Matrix_Lower_Triangular,action="raw")
 nnz_per_column = matrix_analyzer.get_nnz_per_column(csr_matrix=CSR_Matrix_Lower_Triangular,action="raw")
-
+print(level_sets)
+#exit(0)
 # TODO 1: histogram of nnz per level
 nnz_per_level = matrix_analyzer.get_nnz_per_level(level_sets=level_sets, matrix=CSR_Matrix_Lower_Triangular)
 plotter.plot_nnz_per_level(matrixID=MATRIX_ID,dict=nnz_per_level,cumulative=False)
