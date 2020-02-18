@@ -13,7 +13,7 @@ class MatrixAnalyzer:
         num_columns = csr_matrix.get_shape()[1]
         for i in range(1, num_rows+1):
             level_sets[i] = 0
-
+    
         # level_sets[i] = the level of i'th unknown
         for i in range(1, num_rows+1):
             local_max = float('-inf')

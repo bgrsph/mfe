@@ -6,14 +6,12 @@ import argparse
 
 
 # Parse the command line arguments
-#parser = argparse.ArgumentParser(description='Analyzes a matrix with given ID and produces histograms')
-#parser.add_argument('matrix_ID', type=int,
-                #    help='ID of the matrix file')
-#args = parser.parse_args()
+parser = argparse.ArgumentParser(description='Analyzes a matrix with given ID and produces histograms')
+parser.add_argument('matrix_ID', type=int, help='ID of the matrix file')
+args = parser.parse_args()
 
 # Assign the argument to a global variable
-#MATRIX_ID = args.matrix_ID
-MATRIX_ID = 1417
+MATRIX_ID = args.matrix_ID
 
 # Make it True to see the progress
 verbose = True
