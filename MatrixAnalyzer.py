@@ -16,21 +16,18 @@ class MatrixAnalyzer:
     
         # level_sets[i] = the level of i'th unknown
         for i in range(1, num_rows+1):
+            self.debugger.debug("Analyzing Row " + str(i) + "... Remaining: " + str(num_rows + 1 - i))
             local_max = float('-inf')
             for j in range(1, num_columns+1):
                 if csr_matrix[i-1, j-1] != 0:
                     if level_sets[j] > local_max:
                         local_max = level_sets[j]
-            #print(local_max)
-            level_sets[i] = 1 + local_max
-
-            # It means matrix either cannot be read or it's empty somehow
             if local_max == float('-inf'):
-                self.debugger.rise_Error("Rows or Columns cannot be read during Level Calculation")
-                exit(1)
+                continue
+            else:
+                level_sets[i] = 1 + local_max
         self.debugger.debug("Matrix Levels Calculated")
         return level_sets
-
 
     def getLevels_colwise(self, csr_matrix):
         self.debugger.debug("Calculating Matrix Levels...")

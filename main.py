@@ -14,7 +14,7 @@ args = parser.parse_args()
 MATRIX_ID = args.matrix_ID
 
 # Make it True to see the progress
-verbose = True
+verbose = False
 
 # Initialize classes
 matrix_downloader = MatrixDownloader(verbose=verbose)
