@@ -21,7 +21,7 @@ class MatrixAnalyzer:
                 if csr_matrix[i-1, j-1] != 0:
                     if level_sets[j] > local_max:
                         local_max = level_sets[j]
-            print(local_max)
+            #print(local_max)
             level_sets[i] = 1 + local_max
 
             # It means matrix either cannot be read or it's empty somehow
